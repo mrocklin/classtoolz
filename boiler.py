@@ -23,8 +23,8 @@ class Boiler(object):
         return self._info() == other._info()
 
     def __str__(self):
-        return ('%s -- ' % type(self).__name__
-              + ', '.join("%s: %s" % (slot, getattr(self, slot))
+        return '%s(%s)' % (type(self).__name__,
+               ', '.join("%s=%s" % (slot, getattr(self, slot))
                             for slot in self.__slots__))
 
     __repr__ = __str__
