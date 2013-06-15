@@ -1,5 +1,10 @@
 class Boiler(object):
     def __init__(self, *args):
+        if hasattr(self, '__types__'):
+            for typ, arg in zip(self.__types__, args):
+                if not isinstance(arg, typ):
+                    raise TypeError('%s should be of type %s. Got type %s'
+                                     % (arg, typ.__name__, type(arg).__name__))
         try:
             for slot, arg in zip(self.__slots__, args):
                 setattr(self, slot, arg)
@@ -12,5 +17,9 @@ class Boiler(object):
     def __eq__(self, other):
         return self._info() == other._info()
 
-    def __hash__(self):
-        return hash(self._info())
+    def __str__(self):
+        return ('%s -- ' % type(self).__name__
+              + ', '.join("%s: %s" % (slot, getattr(self, slot))
+                            for slot in self.__slots__))
+
+    __repr__ = __str__
