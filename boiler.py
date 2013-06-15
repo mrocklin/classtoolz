@@ -1,4 +1,4 @@
-class Boiler:
+class Boiler(object):
     def __init__(self, *args):
         try:
             for slot, arg in zip(self.__slots__, args):
