@@ -1,4 +1,14 @@
 class Boiler(object):
+    """ Boilerplate for standard Python class
+
+    >>> class Account(Boiler):
+    ...     __slots__ = ['first', 'last', 'id', 'balance']
+    ...     __types__ = [str, str, int, int]
+    ...
+    ...     def name(self):
+    ...         return "%s %s" (self.first, self.last)
+    """
+
     def __init__(self, *args):
         if hasattr(self, '__types__'):
             for typ, arg in zip(self.__types__, args):
