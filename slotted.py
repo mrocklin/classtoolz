@@ -1,7 +1,7 @@
-class Boiler(object):
+class Slotted(object):
     """ Boilerplate for standard Python class
 
-    >>> class Account(Boiler):
+    >>> class Account(Slotted):
     ...     __slots__ = ['first', 'last', 'id', 'balance']
     ...
     ...     def name(self):
@@ -29,10 +29,10 @@ class Boiler(object):
 
     __repr__ = __str__
 
-class TypedBoiler(Boiler):
-    """ Boilerplate for standard Python class
+class TypeSlotted(Slotted):
+    """ Boilerplate for standard Python class -- with types
 
-    >>> class Account(TypedBoiler):
+    >>> class Account(TypeSlotted):
     ...     __slots__ = ['first', 'last', 'id', 'balance']
     ...     __types__ = [str, str, int, int]
     ...
