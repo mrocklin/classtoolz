@@ -62,3 +62,12 @@ class Typed(Base):
                 raise TypeError("%s does not define __types__" %
                         type(self).__name__)
         super(Typed, self).__init__(*args, **kwargs)
+
+
+class Immutable(Base):
+    """ Immutable class Mixin """
+    def __setattr__(self, attr, value):
+        if hasattr(self, attr):
+            raise TypeError("%s class is immutable" % type(self).__name__)
+        else:
+            super(Immutable, self).__setattr__(attr, value)
