@@ -10,8 +10,10 @@ class Slotted(Base):
     ...     __slots__ = ['name', 'age']
 
     >>> p = Person('Alice', 25)
-    >>> p
-    Person(name=Alice, age=25)
+    >>> p.name
+    'Alice'
+    >>> p.age
+    25
     """
 
     def __init__(self, *args, **kwargs):
@@ -42,16 +44,12 @@ class Typed(Base):
 
     >>> class Person(Typed):
     ...     __types__ = [str, int]
-    ...     def __init__(self, name, age):
-    ...         super(Person, self).__init__(name, age)
-    ...         self.name = name
-    ...         self.age = age
 
     >>> Alice = Person('Alice', 25)
-    >>> Bob = Person('Bob', 'Jones')
+    >>> Bob = Person('Bob', 22.5)
     Traceback (most recent call last):
         ...
-    TypeError: Jones should be of type int. Got type str
+    TypeError: 22.5 should be of type int. Got type float
 
 
     """
@@ -69,7 +67,21 @@ class Typed(Base):
 
 
 class Immutable(Base):
-    """ Immutability class Mixin """
+    """ Immutability class Mixin
+
+    Supports only a single write, ideally at object creation time
+
+    >>> class Person(Immutable):
+    ...     def __init__(self, name, age):
+    ...         self.name = name
+    ...         self.age = age
+
+    >>> Alice = Person('Alice', 25)
+    >>> Alice.age = 26
+    Traceback (most recent call last):
+        ...
+    TypeError: Person class is immutable
+    """
     def __setattr__(self, attr, value):
         if hasattr(self, attr):
             if value == getattr(self, attr):
@@ -83,16 +95,10 @@ class Immutable(Base):
 class Cached(Base):
     """ Cached class Mixin
 
-    >>> class A(Cached): pass
+    >>> class Person(Cached): pass
 
-    >>> a = A(1, 2)
-    >>> b = A(1, 2)
-    >>> a is b
+    >>> Person('Alice', 25) is Person('Alice', 25)
     True
-
-    >>> c = A(2, 3)
-    >>> a is c
-    False
     """
     _cache = dict()
 
@@ -111,12 +117,9 @@ class Cached(Base):
 
 
 class Person(Slotted, Typed, Immutable, Cached):
-    """ A Person class - example for Slotted, Typed, and Immutable mixins
+    """ A Person class
 
-    >>> Bob = Person('Bob', 22.5)
-    Traceback (most recent call last):
-        ...
-    TypeError: 22.5 should be of type int. Got type float
+    Example for Slotted, Typed, Immutable and Cached mixins
 
     >>> Alice = Person('Alice', 25)
     >>> Alice
@@ -126,6 +129,11 @@ class Person(Slotted, Typed, Immutable, Cached):
     Traceback (most recent call last):
         ...
     TypeError: Person class is immutable
+
+    >>> Bob = Person('Bob', 22.5)
+    Traceback (most recent call last):
+        ...
+    TypeError: 22.5 should be of type int. Got type float
 
     >>> Alice2 = Person('Alice', 25)  # A duplicate
     >>> Alice is Alice2
