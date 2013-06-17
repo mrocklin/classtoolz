@@ -72,12 +72,45 @@ class Immutable(Base):
     """ Immutability class Mixin """
     def __setattr__(self, attr, value):
         if hasattr(self, attr):
-            raise TypeError("%s class is immutable" % type(self).__name__)
+            if value == getattr(self, attr):
+                return value
+            else:
+                raise TypeError("%s class is immutable" % type(self).__name__)
         else:
             super(Immutable, self).__setattr__(attr, value)
 
 
-class Person(Slotted, Typed, Immutable):
+class Cached(Base):
+    """ Cached class Mixin
+
+    >>> class A(Cached): pass
+
+    >>> a = A(1, 2)
+    >>> b = A(1, 2)
+    >>> a is b
+    True
+
+    >>> c = A(2, 3)
+    >>> a is c
+    False
+    """
+    _cache = dict()
+
+    @staticmethod
+    def _key(cls, *args, **kwargs):
+        return (cls, args, frozenset(kwargs.items()))
+
+    def __new__(cls, *args, **kwargs):
+        key = Cached._key(cls, *args, **kwargs)
+        if key not in Cached._cache:
+            obj = object.__new__(cls)
+            Cached._cache[key] = obj
+        else:
+            obj = Cached._cache[key]
+        return obj
+
+
+class Person(Slotted, Typed, Immutable, Cached):
     """ A Person class - example for Slotted, Typed, and Immutable mixins
 
     >>> Bob = Person('Bob', 22.5)
@@ -93,6 +126,10 @@ class Person(Slotted, Typed, Immutable):
     Traceback (most recent call last):
         ...
     TypeError: Person class is immutable
+
+    >>> Alice2 = Person('Alice', 25)  # A duplicate
+    >>> Alice is Alice2
+    True
 
     """
     __slots__ = ['name', 'age']
