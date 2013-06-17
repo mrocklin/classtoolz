@@ -6,11 +6,12 @@ class Base(object):
 class Slotted(Base):
     """ Boilerplate for standard Python class
 
-    >>> class Account(Slotted):
-    ...     __slots__ = ['first', 'last', 'id', 'balance']
-    ...
-    ...     def name(self):
-    ...         return "%s %s" (self.first, self.last)
+    >>> class Person(Slotted):
+    ...     __slots__ = ['name', 'age']
+
+    >>> p = Person('Alice', 25)
+    >>> p
+    Person(name=Alice, age=25)
     """
 
     def __init__(self, *args, **kwargs):
@@ -48,7 +49,10 @@ class Typed(Base):
 
     >>> Alice = Person('Alice', 25)
     >>> Bob = Person('Bob', 'Jones')
-    TypeError()
+    Traceback (most recent call last):
+        ...
+    TypeError: Jones should be of type int. Got type str
+
 
     """
     def __init__(self, *args, **kwargs):
@@ -65,9 +69,31 @@ class Typed(Base):
 
 
 class Immutable(Base):
-    """ Immutable class Mixin """
+    """ Immutability class Mixin """
     def __setattr__(self, attr, value):
         if hasattr(self, attr):
             raise TypeError("%s class is immutable" % type(self).__name__)
         else:
             super(Immutable, self).__setattr__(attr, value)
+
+
+class Person(Slotted, Typed, Immutable):
+    """ A Person class - example for Slotted, Typed, and Immutable mixins
+
+    >>> Bob = Person('Bob', 22.5)
+    Traceback (most recent call last):
+        ...
+    TypeError: 22.5 should be of type int. Got type float
+
+    >>> Alice = Person('Alice', 25)
+    >>> Alice
+    Person(name=Alice, age=25)
+
+    >>> Alice.age = 26
+    Traceback (most recent call last):
+        ...
+    TypeError: Person class is immutable
+
+    """
+    __slots__ = ['name', 'age']
+    __types__ = [str, int]
