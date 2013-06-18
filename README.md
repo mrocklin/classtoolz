@@ -7,3 +7,8 @@ License
 -------
 
 BSD Style.  See LICENSE.TXT
+
+See Also
+--------
+
+[`itertoolz`](http://github.com/mrocklin/itertoolz)
