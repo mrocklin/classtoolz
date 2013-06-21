@@ -26,7 +26,7 @@ class Slotted(Base):
         return (type(self), tuple(map(self.__getattribute__, self.__slots__)))
 
     def __eq__(self, other):
-        return self._info() == other._info()
+        return type(self) == type(other) and self._info() == other._info()
 
     def __str__(self):
         return '%s(%s)' % (type(self).__name__,
