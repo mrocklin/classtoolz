@@ -2,7 +2,7 @@ from os.path import exists
 from setuptools import setup
 
 setup(name='classtoolz',
-      version='0.1',
+      version='0.1.1',
       description='Class utilities',
       url='http://github.com/mrocklin/classtoolz',
       author='Matthew Rocklin',
