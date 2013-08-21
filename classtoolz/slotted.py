@@ -11,6 +11,9 @@ class Slotted(Base):
     'Alice'
     >>> p.age
     25
+
+    See Also:
+        collections.namedtuple
     """
 
     def __init__(self, *args, **kwargs):
