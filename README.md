@@ -11,4 +11,5 @@ BSD Style.  See LICENSE.TXT
 See Also
 --------
 
-[`itertoolz`](http://github.com/mrocklin/itertoolz)
+*   [`itertoolz`](http://github.com/mrocklin/itertoolz)
+*   [`functoolz`](http://github.com/mrocklin/functoolz)
